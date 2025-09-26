@@ -1,10 +1,10 @@
-//! Laminar hydraulic conductivity (base unit kg/(s·m⁴)).
+//! Laminar hydraulic resistance (base unit kg/(s·m⁴)).
 
 
 quantity! {
-    /// Hydraulic conductivity laminar (base unit kg/(s·m⁴)).
-    quantity: HydraulicConductivityLaminar; "laminar hydraulic conductivity";
-    /// Dimension of laminar hydraulic conductivity, L⁻⁴M¹T⁻¹ (base unit kg/(s·m⁴)).
+    /// Hydraulic resistance laminar (base unit kg/(s·m⁴)).
+    quantity: HydraulicResistanceLaminar; "laminar hydraulic resistance";
+    /// Dimension of laminar hydraulic resistance, L⁻⁴M¹T⁻¹ (base unit kg/(s·m⁴)).
     dimension: ISQ<
         N4,     // length (negative 4)
         P1,     // mass (positive 1)
@@ -26,7 +26,7 @@ quantity! {
 mod test {
     storage_types! {
         use crate::num::One;
-        use crate::si::hydraulic_conductivity_laminar as hcl;
+        use crate::si::hydraulic_resistance_laminar as hcl;
         use crate::si::mass as m;
         use crate::si::time as t;
         use crate::si::length as l;
@@ -36,7 +36,7 @@ mod test {
         
         #[test]
         fn check_dimension() {
-            let _: HydraulicConductivityLaminar<V> = (
+            let _: HydraulicResistanceLaminar<V> = (
                 Mass::new::<m::kilogram>(V::one()) 
                 / (Time::new::<t::second>(V::one()) * Area::new::<a::square_meter>(V::one()) * Area::new::<a::square_meter>(V::one()))
             ).into();
@@ -48,7 +48,7 @@ mod test {
             test::<m::gram, t::second, l::meter, hcl::gram_per_second_meter_to_the_fourth>();
             
             fn test<M: m::Conversion<V>, T: t::Conversion<V>, L: l::Conversion<V>, HCL: hcl::Conversion<V>>() {
-                Test::assert_approx_eq(&HydraulicConductivityLaminar::new::<HCL>(V::one()),
+                Test::assert_approx_eq(&HydraulicResistanceLaminar::new::<HCL>(V::one()),
                     &(
                         Mass::new::<M>(V::one()) 
                         / (Time::new::<T>(V::one()) * Area::new::<a::square_meter>(V::one()) * Area::new::<a::square_meter>(V::one()))
@@ -58,8 +58,8 @@ mod test {
         #[test]
         fn check_known_conversions() {
             // 1 kg/(s·m⁴) = 1000 g/(s·m⁴)
-            Test::assert_approx_eq(&HydraulicConductivityLaminar::new::<hcl::kilogram_per_second_meter_to_the_fourth>(V::one()),
-                &HydraulicConductivityLaminar::new::<hcl::gram_per_second_meter_to_the_fourth>(1000.0));
+            Test::assert_approx_eq(&HydraulicResistanceLaminar::new::<hcl::kilogram_per_second_meter_to_the_fourth>(V::one()),
+                &HydraulicResistanceLaminar::new::<hcl::gram_per_second_meter_to_the_fourth>(1000.0));
         }
     }
 }
