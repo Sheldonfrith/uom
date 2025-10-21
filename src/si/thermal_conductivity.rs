@@ -122,6 +122,10 @@ quantity! {
             "watt per meter degree celsius", "watts per meter degree celsius";
         @milliwatt_per_meter_degree_celsius: prefix!(milli); "mW/(m · °C)",
             "milliwatt per meter degree celsius", "milliwatts per meter degree celsius";
+        @btu_per_hour_foot_fahrenheit: 0.5781759824; "BTU/(h · ft · °F)",
+            "BTU per hour foot fahrenheit", "BTU per hour feet fahrenheit";
+        @btu_it_per_hour_foot_fahrenheit: 0.5777893165; "BTU (IT)/(h · ft · °F)",
+            "BTU (IT) per hour foot fahrenheit", "BTU (IT) per hour feet fahrenheit";
     }
 }
 
