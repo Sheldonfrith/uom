@@ -62,6 +62,8 @@ quantity! {
         @btu_it: 1.055_056_E3; "Btu (IT)", "British thermal unit (IT)",
             "British thermal units (IT)";
         @btu: 1.054_350_E3; "Btu", "British thermal unit", "British thermal units";
+        /// in HVAC MBTU = 1000 Btu
+        @thousand_btu: 1.054_350_E6; "MBtu (HVAC)", "Thousand Btu", "Thousand British thermal units";
         @btu_39: 1.059_67_E3; "Btu₃₉", "British thermal unit (39 °F)",
             "British thermal units (39 °F)";
         @btu_59: 1.054_80_E3; "Btu₅₉", "British thermal unit (59 °F)",

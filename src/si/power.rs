@@ -53,6 +53,10 @@ quantity! {
             "horsepower (Imperial)";
         @hydraulic_horsepower: 7.460_43_E2; "hp (hydraulic)", "hydraulic horsepower",
             "hydraulic horsepower";
+        @btu_per_hour: 2.930_710_701_722_222_E-1; "Btu/h", "British thermal unit per hour",
+            "British thermal units per hour";
+        @thousand_btu_per_hour: 2.930_710_701_722_222_E2; "MBH", "thousand British thermal units per hour",
+            "thousand British thermal units per hour";
     }
 }
 
