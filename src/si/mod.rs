@@ -94,6 +94,7 @@ system! {
         heat_capacity::HeatCapacity,
         heat_flux_density::HeatFluxDensity,
         heat_transfer::HeatTransfer,
+        hydraulic_resistance::HydraulicResistance,
         inductance::Inductance,
         information::Information,
         information_rate::InformationRate,

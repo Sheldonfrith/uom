@@ -757,6 +757,7 @@ macro_rules! system {
 
                 use super::super::*;
 
+
                 impl<D, U> Quantity<D, U, V>
                 where
                     D: Dimension + ?Sized,
@@ -1012,16 +1013,29 @@ macro_rules! system {
         {
         }
 
+        // impl<D, U, V> $crate::lib::hash::Hash for Quantity<D, U, V>
+        // where
+        //     D: Dimension + ?Sized,
+        //     U: Units<V> + ?Sized,
+        //     V: $crate::num::Num + $crate::Conversion<V> + $crate::lib::hash::Hash,
+        // {
+        //     fn hash<H: $crate::lib::hash::Hasher>(&self, state: &mut H) {
+        //         self.value.hash(state);
+        //     }
+        // }
+        
+        // Implement hashing for floats
         impl<D, U, V> $crate::lib::hash::Hash for Quantity<D, U, V>
         where
             D: Dimension + ?Sized,
             U: Units<V> + ?Sized,
-            V: $crate::num::Num + $crate::Conversion<V> + $crate::lib::hash::Hash,
+            V: $crate::num::Num + $crate::Conversion<V> + $crate::HashableValue,
         {
             fn hash<H: $crate::lib::hash::Hasher>(&self, state: &mut H) {
-                self.value.hash(state);
+                $crate::HashableValue::hash_value(&self.value, state);
             }
         }
+       
 
         impl<D, U, V> $crate::lib::ops::Neg for Quantity<D, U, V>
         where

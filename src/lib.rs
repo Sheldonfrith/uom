@@ -445,6 +445,13 @@ pub trait Conversion<V> {
     }
 }
 
+
+// In src/lib.rs
+pub trait HashableValue {
+    fn hash_value<H: lib::hash::Hasher>(&self, state: &mut H);
+}
+
+
 /// Trait representing a [conversion factor][factor].
 ///
 /// ## Generic Parameters
@@ -503,10 +510,15 @@ pub trait Kind:
     + marker::Saturating
 {
 }
-
 storage_types! {
     types: Float;
+    use std::hash::Hash;
 
+     impl crate::HashableValue for V {
+        fn hash_value<H: crate::lib::hash::Hasher>(&self, state: &mut H) {
+            self.to_bits().hash(state);
+        }
+    }
     impl crate::Conversion<Self> for V {
         type T = Self;
 
@@ -543,7 +555,11 @@ storage_types! {
 
 storage_types! {
     types: PrimInt;
-
+    impl crate::HashableValue for V {
+        fn hash_value<H: crate::lib::hash::Hasher>(&self, state: &mut H) {
+            self.hash(state);
+        }
+    }
     impl crate::Conversion<V> for V {
         type T = crate::num::rational::Ratio<V>;
 
@@ -572,7 +588,11 @@ storage_types! {
 
 storage_types! {
     types: BigInt, BigUint;
-
+    impl crate::HashableValue for V {
+        fn hash_value<H: crate::lib::hash::Hasher>(&self, state: &mut H) {
+            self.hash(state);
+        }
+    }
     impl crate::Conversion<V> for V {
         type T = crate::num::rational::Ratio<V>;
 
@@ -601,7 +621,11 @@ storage_types! {
 
 storage_types! {
     types: Rational, Rational32, Rational64;
-
+    impl crate::HashableValue for V {
+        fn hash_value<H: crate::lib::hash::Hasher>(&self, state: &mut H) {
+            self.hash(state);
+        }
+    }
     impl crate::Conversion<V> for V {
         type T = V;
 
@@ -626,7 +650,11 @@ storage_types! {
 
 storage_types! {
     types: BigRational;
-
+    impl crate::HashableValue for V {
+        fn hash_value<H: crate::lib::hash::Hasher>(&self, state: &mut H) {
+            self.hash(state);
+        }
+    }
     impl crate::Conversion<V> for V {
         type T = V;
 
@@ -655,6 +683,11 @@ storage_types! {
 
 storage_types! {
     types: Complex;
+     impl crate::HashableValue for V {
+        fn hash_value<H: crate::lib::hash::Hasher>(&self, state: &mut H) {
+            self.to_bits().hash(state);
+        }
+    }
     impl crate::Conversion<V> for V {
         type T = VV;
 
