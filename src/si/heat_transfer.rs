@@ -96,6 +96,8 @@ quantity! {
         /// Derived unit of heat transfer in derived units. Equivalent to kg/(s³ · K).
         @watt_per_square_meter_kelvin: prefix!(none); "W/(m² · K)",
             "watt per square meter kelvin", "watts per square meter kelvin";
+        @watt_per_square_centimeter_kelvin: prefix!(none) / prefix!(centi) / prefix!(centi);
+            "W/(cm² · K)", "watt per square centimeter kelvin", "watts per square centimeter kelvin";
         @deciwatt_per_square_meter_kelvin: prefix!(deci); "dW/(m² · K)",
             "deciwatt per square meter kelvin", "deciwatts per square meter kelvin";
         @centiwatt_per_square_meter_kelvin: prefix!(centi); "cW/(m² · K)",
@@ -196,6 +198,18 @@ mod tests {
         use crate::si::temperature_interval as ti;
         use crate::si::time as t;
         use crate::tests::Test;
+         use crate::num::FromPrimitive;
+
+        #[test]
+        fn manual_peace_of_mind_conversion_test() {
+            // 1 kg/(cm²·s) == 10_000 kg/(m²·s)
+            Test::assert_approx_eq(
+                &HeatTransfer::new::<ht::watt_per_square_meter_kelvin>(V::one())
+                    .get::<ht::watt_per_square_centimeter_kelvin>(),
+                &V::from_f64(0.0001).unwrap(),
+            );
+
+        }
 
         #[test]
         fn check_dimension() {
@@ -270,6 +284,8 @@ mod tests {
             test::<p::decawatt, a::square_meter, ti::kelvin,
                 ht::decawatt_per_square_meter_kelvin>();
             test::<p::watt, a::square_meter, ti::kelvin, ht::watt_per_square_meter_kelvin>();
+            test::<p::watt, a::square_centimeter, ti::kelvin,
+                ht::watt_per_square_centimeter_kelvin>();
             test::<p::deciwatt, a::square_meter, ti::kelvin,
                 ht::deciwatt_per_square_meter_kelvin>();
             test::<p::centiwatt, a::square_meter, ti::kelvin,

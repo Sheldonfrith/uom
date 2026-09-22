@@ -16,6 +16,9 @@ quantity! {
     units {
         @kilogram_per_square_meter_second: prefix!(none); "kg/(m² · s)",
             "kilogram per square meter second", "kilograms per square meter second";
+        @kilogram_per_square_centimeter_second: prefix!(none) / prefix!(centi) / prefix!(centi);
+            "kg/(cm² · s)", "kilogram per square centimeter second",
+            "kilograms per square centimeter second";
         @gram_per_square_centimeter_second: prefix!(milli) / prefix!(centi) / prefix!(centi);
             "g/(cm² · s)", "gram per square centimeter second",
             "grams per square centimeter second";
@@ -32,6 +35,37 @@ mod test {
         use crate::si::time as t;
         use crate::si::area as a;
         use crate::tests::Test;
+        use crate::num::FromPrimitive;
+
+        #[test]
+        fn manual_peace_of_mind_conversion_test() {
+            // 1 kg/(cm²·s) == 10_000 kg/(m²·s)
+            Test::assert_approx_eq(
+                &MassFlux::new::<mf::kilogram_per_square_centimeter_second>(V::one())
+                    .get::<mf::kilogram_per_square_meter_second>(),
+                &V::from_f64(1.0_E4).unwrap(),
+            );
+
+             Test::assert_approx_eq(
+                &MassFlux::new::<mf::kilogram_per_square_meter_second>(V::one())
+                    .get::<mf::kilogram_per_square_centimeter_second>(),
+                &V::from_f64(0.0001).unwrap(),
+            );
+
+            // 1 g/(cm²·s) == 10 kg/(m²·s)
+            Test::assert_approx_eq(
+                &MassFlux::new::<mf::gram_per_square_centimeter_second>(V::one())
+                    .get::<mf::kilogram_per_square_meter_second>(),
+                &V::from_f64(1.0_E1).unwrap(),
+            );
+
+            // 1 kg/(cm²·s) == 1_000 g/(cm²·s)
+            Test::assert_approx_eq(
+                &MassFlux::new::<mf::kilogram_per_square_centimeter_second>(V::one())
+                    .get::<mf::gram_per_square_centimeter_second>(),
+                &V::from_f64(1.0_E3).unwrap(),
+            );
+        }
 
         #[test]
         fn check_dimension() {
@@ -45,6 +79,8 @@ mod test {
             test::<m::kilogram, a::square_meter, t::second, mf::kilogram_per_square_meter_second>();
             test::<m::gram, a::square_centimeter, t::second,
                 mf::gram_per_square_centimeter_second>();
+            test::<m::kilogram, a::square_centimeter, t::second,
+                mf::kilogram_per_square_centimeter_second>();
 
             fn test<M: m::Conversion<V>,
                 A: a::Conversion<V>,
