@@ -34,6 +34,9 @@ quantity! {
         /// Derived unit of density.
         @kilogram_per_cubic_meter: prefix!(kilo) / prefix!(kilo); "kg/m³",
             "kilogram per cubic meter", "kilograms per cubic meter";
+        @kilogram_per_cubic_centimeter: 
+        prefix!(none) / prefix!(centi) / prefix!(centi) / prefix!(centi); "kg/cm³",
+            "kilogram per cubic centimeter", "kilograms per cubic centimeter";
         @hectogram_per_cubic_meter: prefix!(hecto) / prefix!(kilo); "hg/m³",
             "hectogram per cubic meter", "hectograms per cubic meter";
         @decagram_per_cubic_meter: prefix!(deca) / prefix!(kilo); "dag/m³",
@@ -132,7 +135,19 @@ mod test {
         use crate::si::quantities::*;
         use crate::si::volume as v;
         use crate::tests::Test;
+        use crate::num::FromPrimitive;
 
+        #[test]
+        fn manual_peace_of_mind_conversion_test() {
+            // 1 kg/(cm²·s) == 10_000 kg/(m²·s)
+            Test::assert_approx_eq(
+                &MassDensity::new::<d::kilogram_per_cubic_meter>(V::one())
+                    .get::<d::kilogram_per_cubic_centimeter>(),
+                &V::from_f64(0.000001).unwrap(),
+            );
+
+            
+        }
         #[test]
         fn check_dimension() {
             let _: MassDensity<V> = Mass::new::<m::kilogram>(V::one())
@@ -149,6 +164,7 @@ mod test {
             test::<m::gigagram, v::cubic_meter, d::gigagram_per_cubic_meter>();
             test::<m::megagram, v::cubic_meter, d::megagram_per_cubic_meter>();
             test::<m::kilogram, v::cubic_meter, d::kilogram_per_cubic_meter>();
+            test::<m::kilogram, v::cubic_centimeter, d::kilogram_per_cubic_centimeter>();
             test::<m::hectogram, v::cubic_meter, d::hectogram_per_cubic_meter>();
             test::<m::decagram, v::cubic_meter, d::decagram_per_cubic_meter>();
             test::<m::gram, v::cubic_meter, d::gram_per_cubic_meter>();

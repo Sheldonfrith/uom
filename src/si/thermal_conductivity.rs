@@ -90,6 +90,8 @@ quantity! {
         /// Derived unit of thermal conductivity in derived units. Equivalent to kg · m/(s³ · K).
         @watt_per_meter_kelvin: prefix!(none); "W/(m · K)",
             "watt per meter kelvin", "watts per meter kelvin";
+        @watt_per_centimeter_kelvin: prefix!(none) / prefix!(centi); "W/(cm · K)",
+            "watt per centimeter kelvin", "watts per centimeter kelvin";
         @deciwatt_per_meter_kelvin: prefix!(deci); "dW/(m · K)",
             "deciwatt per meter kelvin", "deciwatts per meter kelvin";
         @centiwatt_per_meter_kelvin: prefix!(centi); "cW/(m · K)",
@@ -141,6 +143,18 @@ mod tests {
         use crate::si::thermal_conductivity as tc;
         use crate::si::time as t;
         use crate::tests::Test;
+        use crate::num::FromPrimitive;
+
+        #[test]
+        fn manual_peace_of_mind_conversion_test() {
+            // 1 kg/(cm²·s) == 10_000 kg/(m²·s)
+            Test::assert_approx_eq(
+                &ThermalConductivity::new::<tc::watt_per_meter_kelvin>(V::one())
+                    .get::<tc::watt_per_centimeter_kelvin>(),
+                &V::from_f64(0.01).unwrap(),
+            );
+
+        }
 
         #[test]
         fn check_dimension() {
@@ -207,6 +221,7 @@ mod tests {
             test::<p::hectowatt, l::meter, ti::kelvin, tc::hectowatt_per_meter_kelvin>();
             test::<p::decawatt, l::meter, ti::kelvin, tc::decawatt_per_meter_kelvin>();
             test::<p::watt, l::meter, ti::kelvin, tc::watt_per_meter_kelvin>();
+            test::<p::watt, l::centimeter, ti::kelvin, tc::watt_per_centimeter_kelvin>();
             test::<p::deciwatt, l::meter, ti::kelvin, tc::deciwatt_per_meter_kelvin>();
             test::<p::centiwatt, l::meter, ti::kelvin, tc::centiwatt_per_meter_kelvin>();
             test::<p::milliwatt, l::meter, ti::kelvin, tc::milliwatt_per_meter_kelvin>();
